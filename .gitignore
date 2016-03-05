@@ -1,0 +1,8 @@
+# vim tmp file
+*.sw*
+
+# scss cache dir
+.sass-cache/
+
+# do not add non site related stuff
+*.md
