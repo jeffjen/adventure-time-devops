@@ -34,4 +34,8 @@ markdown: kramdown
 
 # Use Github Flavored Markdown
 kramdown:
-    input: GFM
+  input: GFM
+
+# Enable gist tag
+gems:
+  - jekyll-gist
