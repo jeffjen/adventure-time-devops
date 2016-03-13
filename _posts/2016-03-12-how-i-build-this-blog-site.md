@@ -20,6 +20,9 @@ In the end I landed on a solution using:
 
 <!--more-->
 
+If you are only interested in Jekyll setup and Github Pages deployment strategy,
+[click here](#create-a-jekyll-site).
+
 ## Considerations
 I am a DevOps engineer working with dozens of Linux machine on-premise, Cloud
 Providers (AWS, Azure, etc), and on this very machine I work on.  For many
@@ -103,14 +106,17 @@ a new workspace with the new *Vagrantfile*.  The provision can take a while
 depending on your machine and network performance.
 
 With *Vagrant*, when you feel you had a good box, you could store this box to
-use later, or share to your organization for consistent environment.
+use later, or share to your organization for a consistent environment.
 
 {% highlight bash %}
 cd /path/to/Docuement
+# Download the ridculously complex Vagrantfile to provision a box with jekyll
+curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/8cdaba026b8029b7d967160af7b63f5230a1cf58/Vagrantfile-jekyll
+vagrant up workspace
 # Review VirtualBox console for the name of your VM box
 vagrant pacakge --base name-of-your-box
 # Add this box with desired alias
-vagrant box add jekyll/2 package.box
+vagrant box add jekyll/3 package.box
 {% endhighlight %}
 
 ### Version control configuration
@@ -118,7 +124,6 @@ I cannot stress this enough: **version control everything**.  You will be glad
 when you could traceback to a working version of your environment.  Also, what
 better place to store these configuration then in VCS providers such as
 [Github](https://github.com/) and [Bitbucket](https://bitbucket.org/)?
-
 
 ## About that jekyll site building...
 The best place to learn how to use jekyll is starting with their
@@ -128,31 +133,24 @@ Nonetheless, I will show you the minimum steps required to start a one with
 the box you created.
 
 Here is the template Vagrantfile you will be using, notice that I had already
-added the box we provisioned earlier as `jekyll/2`:
+added the box we provisioned earlier as `jekyll/3`:
 
-{% gist jeffjen/b466006f3a67f91a7a81 %}
+{% gist jeffjen/e170fa06e6ef892cb77c %}
 
 ### Create a jekyll site
 ![Building your first jekyll site]({{ site.url }}/assets/building-your-first-jekyll-site.gif)
 
-Login to your box by `vagrant ssh workspace`.  Make a decision on where you
-want to place your site source in, here I referr to by `jekyll-sites`.
-
-Goto `/path/to/jekyll-sites` and bootstrap a site called `your-testing-site`
+Make a decision on where you want to place your site source in, here I refer
+it by `jekyll-sites`.
 
 {% highlight bash %}
 # Bootstrap a new site called your-testing-site
 mkdir -p /path/to/jekyll-sites/your-testing-site
-cd your-testing-site
+cd /path/to/jekyll-sites/your-testing-site
 jekyll new your-testing-site
 # Generate site from source
 jekyll build --source your-testing-site --destination site
-{% endhighlight %}
-
-Serve the site for spot checking.
-
-{% highlight bash %}
-cd /path/to/jekyll-sites/your-testing-site
+# Serve the site for spot checking.
 jekyll serve -s your-testing-site -d site -H 0.0.0.0
 {% endhighlight %}
 
@@ -160,18 +158,20 @@ View the site by visiting `http://127.0.0.1:4000` from your host machine.
 
 ### Publish to Github Pages
 Now that you had your source in `your-testing-site` and your generated site
-`site` under your workspace `jekyll-sites`, its time to prepare publishing.
-We will publish it to [Github Pages](https://pages.github.com/) since this is
-the easiest, as well as **forcing you to version control your site**.
+`site`, its time to prepare publishing.
 
-Create a repository on [Github](https://github.com).
+We will publish to [Github Pages](https://pages.github.com/) since this will
+ **force you to version control your site**.
+
+Create a repository on [Github](https://github.com), then from your
+`jekyll-sites`:
 
 {% highlight bash %}
 cd /path/to/jekyll-sites/your-testing-site/your-testing-site
 # Initialize your site source and configuration
 git init
 # Add remote repository URL and pull + rebase
-git remote add origin [remote\_url]
+git remote add origin remote_url
 git pull --rebase
 # Optional push if you have had commited changes
 git push -u
@@ -185,7 +185,7 @@ contents from this branch and host them on their server farm. Notice that
 - Keep a separate history from your source.
 
 This is why we keep two document roots.  One for your **source code** and
-**jekyll** runtime settings; the other for storing and presenting the site.
+**jekyll runtime settings**; the other for storing and presenting the site.
 
 {% highlight bash %}
 cd /path/to/jekyll-sites/your-testing-site/site
@@ -195,11 +195,7 @@ git init
 git remote add origin remote_url
 # Checkout an orphaned branch gh-pages
 git checkout --orphan gh-pages
-{% endhighlight %}
-
-Add your site contents and make your first commit, then push to remote.
-
-{% highlight bash %}
+# Add your site contents and make your first commit, then push to remote.
 git push -u origin gh-pages
 {% endhighlight %}
 
