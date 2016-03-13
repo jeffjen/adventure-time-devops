@@ -6,35 +6,429 @@
 </description>
     <link>/adventure-time-devops/</link>
     <atom:link href="/adventure-time-devops/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Mar 2016 09:42:54 +0000</pubDate>
-    <lastBuildDate>Sat, 05 Mar 2016 09:42:54 +0000</lastBuildDate>
+    <pubDate>Sun, 13 Mar 2016 16:00:10 +0000</pubDate>
+    <lastBuildDate>Sun, 13 Mar 2016 16:00:10 +0000</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+        <title>Setup a Jekyll workspace and Strats for Deployment</title>
+        <description>&lt;p&gt;The best place to learn how to use jekyll is starting with their
+&lt;a href=&quot;https://jekyllrb.com/docs/usage/&quot;&gt;excellent guide&lt;/a&gt;.  The goal for this
+post is to teach you how to review and publish a jekyll site.
+Nonetheless, I will show you the minimum steps required to start one.&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;p&gt;This post covers the following topic:&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Blog site generation through &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Hosting provided by &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;!--more--&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;before-you-start&quot;&gt;Before you start&lt;/h2&gt;
+&lt;p&gt;If you had missed the first post about
+&lt;a href=&quot;/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/&quot;&gt;How I build this blog site&lt;/a&gt;
+you might want to check that out first.  But if you are interated only in
+learning how to manage Jekyll and Deployment Strategy,
+&lt;a href=&quot;#create-a-jekyll-site&quot;&gt;skip ahead&lt;/a&gt;&lt;/p&gt;
 
+&lt;p&gt;Here is the template Vagrantfile you will be using, notice that I had already
+added the box we provisioned earlier as &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll/3&lt;/code&gt;:&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = &amp;quot;2&amp;quot;
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.ssh.forward_agent = true
+    config.ssh.forward_x11 = true
+
+    # Remember to provision a box with Vagrant file from
+    #     https://gist.github.com/jeffjen/b466006f3a67f91a7a81
+    # And add the box with vagrant package
+    config.vm.box = &amp;quot;jekyll/3&amp;quot;
+    config.vm.box_check_update = true
+    config.vm.provider &amp;quot;virtualbox&amp;quot; do |vb|
+        vb.gui = false
+        vb.customize [&amp;quot;modifyvm&amp;quot;, :id, &amp;quot;--memory&amp;quot;, &amp;quot;1024&amp;quot;]
+    end
+
+    config.vm.define &amp;quot;workspace&amp;quot; do |m|
+        m.vm.network &amp;quot;private_network&amp;quot;, type: &amp;quot;dhcp&amp;quot;
+        m.vm.network &amp;quot;forwarded_port&amp;quot;, guest: 4000, host: 4000
+    end
+
+end&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/jeffjen/e170fa06e6ef892cb77c.js&quot;&gt; &lt;/script&gt;
+
+&lt;h2 id=&quot;create-a-jekyll-site&quot;&gt;Create a jekyll site&lt;/h2&gt;
+&lt;p&gt;Make a decision on where you want to place your site source in, here I refer
+it by &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-sites&lt;/code&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Bootstrap a new site called your-testing-site&lt;/span&gt;
+mkdir -p /path/to/jekyll-sites/your-testing-site
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/jekyll-sites/your-testing-site
+jekyll new your-testing-site
+&lt;span class=&quot;c&quot;&gt;# Generate site from source&lt;/span&gt;
+jekyll build --source your-testing-site --destination site
+&lt;span class=&quot;c&quot;&gt;# Serve the site for spot checking.&lt;/span&gt;
+jekyll serve -s your-testing-site -d site -H 0.0.0.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;View the site by visiting &lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000&lt;/code&gt; from your host machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/building-your-first-jekyll-site.gif&quot; alt=&quot;Building your first jekyll site&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;publish-to-github-pages&quot;&gt;Publish to Github Pages&lt;/h2&gt;
+&lt;p&gt;Now that you had your source in &lt;code class=&quot;highlighter-rouge&quot;&gt;your-testing-site&lt;/code&gt; and your generated site
+&lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt;, its time to prepare publishing.&lt;/p&gt;
+
+&lt;p&gt;We will publish to &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt; since this will
+&lt;strong&gt;force you to version control your site&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Create a repository on &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt;, then from your
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-sites&lt;/code&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/jekyll-sites/your-testing-site/your-testing-site
+&lt;span class=&quot;c&quot;&gt;# Initialize your site source and configuration&lt;/span&gt;
+git init
+&lt;span class=&quot;c&quot;&gt;# Add remote repository URL and pull + rebase&lt;/span&gt;
+git remote add origin remote_url
+git pull --rebase
+&lt;span class=&quot;c&quot;&gt;# Optional push if you have had commited changes&lt;/span&gt;
+git push -u&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now you need to prepare a dedicated branch &lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt;.  Github Pages takes
+contents from this branch and host them on their server farm. Notice that
+&lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt; must:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Track files only pertain to your site.&lt;/li&gt;
+  &lt;li&gt;Keep a separate history from your source.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is why we keep two document roots.  One for your &lt;strong&gt;source code&lt;/strong&gt; and
+&lt;strong&gt;jekyll runtime settings&lt;/strong&gt;; the other for &lt;strong&gt;presenting the site&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/jekyll-sites/your-testing-site/site
+&lt;span class=&quot;c&quot;&gt;# Initialize generated contents and assets&lt;/span&gt;
+git init
+&lt;span class=&quot;c&quot;&gt;# Add remote repository URL&lt;/span&gt;
+git remote add origin remote_url
+&lt;span class=&quot;c&quot;&gt;# Checkout an orphaned branch gh-pages&lt;/span&gt;
+git checkout --orphan gh-pages
+&lt;span class=&quot;c&quot;&gt;# Add your site contents and make your first commit, then push to remote.&lt;/span&gt;
+git push -u origin gh-pages&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;And with that final step, your site is up on Github Pages.&lt;/p&gt;
+
+&lt;p&gt;Visit your site through &lt;a href=&quot;&quot;&gt;http://your-account-name.github.io/your-testing-site/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So to recap the deployment steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Direct Content and configuration changes to &lt;code class=&quot;highlighter-rouge&quot;&gt;your-testing-site&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Manage your branch like you normaly would, provided not named &lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;When you are ready to publish, goto your &lt;code class=&quot;highlighter-rouge&quot;&gt;site&lt;/code&gt; directory and commit/push
+to &lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
 </description>
-        <pubDate>Sat, 05 Mar 2016 06:07:40 +0000</pubDate>
-        <link>/adventure-time-devops/blog/jekyll/update/2016/03/05/welcome-to-jekyll/</link>
-        <guid isPermaLink="true">/adventure-time-devops/blog/jekyll/update/2016/03/05/welcome-to-jekyll/</guid>
+        <pubDate>Sun, 13 Mar 2016 10:00:00 +0000</pubDate>
+        <link>/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</link>
+        <guid isPermaLink="true">/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</guid>
+        
+        <category>jekyll</category>
+        
+        <category>github</category>
+        
+        <category>vagrant</category>
         
         
         <category>jekyll</category>
         
-        <category>update</category>
+      </item>
+    
+      <item>
+        <title>How I build this blog site</title>
+        <description>&lt;p&gt;Before I started writing this blog I spent a good week surveying solutions to
+my blogging workflow.  I did not opt for blog site providers such as Blogger or
+Wordpress: not because they are bad, but out of weighing the tradeoff between
+adapting a new workflow and tool chains I grow accustomed with.&lt;/p&gt;
+
+&lt;p&gt;In the end I landed on a solution using:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Writing in Github Flavored Markdown in &lt;a href=&quot;http://www.vim.org/&quot;&gt;Vim&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Blog site generation through &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Hosting provided by &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;And finally, &lt;strong&gt;clear documentation&lt;/strong&gt; on how to customize&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;for-the-faint-of-heart&quot;&gt;For the faint of heart&lt;/h2&gt;
+
+&lt;p&gt;This post covers a great deal in how to provision an environment to start using
+jekyll.  The target audience really is people interested in VM provisioning and
+DevOps principles.&lt;/p&gt;
+
+&lt;p&gt;Check out
+&lt;a href=&quot;/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;
+for a gentle introduction on Jekyll and Github Pages.&lt;/p&gt;
+
+&lt;h2 id=&quot;considerations&quot;&gt;Considerations&lt;/h2&gt;
+&lt;p&gt;I am a DevOps engineer working with dozens of Linux machine on-premise, Cloud
+Providers (AWS, Azure, etc), and on this very machine I work on.  For many
+DevOps engineer, what better way to manage these systems then working in remote
+login sessions?  Adept in &lt;em&gt;text based&lt;/em&gt; tool chain is necessary, thus &lt;strong&gt;Vim&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Another concern I have is with &lt;a href=&quot;#minimizing-footprint&quot;&gt;minimizing footprint&lt;/a&gt; on
+the machine I work on, and &lt;a href=&quot;#repeatable-environment&quot;&gt;repeatable environment&lt;/a&gt; in
+case of migration or disaster recovery.&lt;/p&gt;
+
+&lt;p&gt;Think about the role you play in:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;As an Application Developer you work on a single project with a set of
+predictable requirements.&lt;/li&gt;
+  &lt;li&gt;As a DevOps engineer you work with many projects with different sets of
+requirements.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Finally, I need to &lt;a href=&quot;#version-control-configuration&quot;&gt;version control configuration&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;minimizing-footprint&quot;&gt;Minimizing footprint&lt;/h3&gt;
+&lt;p&gt;Think about what you are allowed to do when you rent a place.  You probably
+will not take down a wall, retile the floor, or even place a nail on the wall.
+That is because your landlord had a contract with you stating you cannot, and
+rightly so for your own safety and their protection.&lt;/p&gt;
+
+&lt;p&gt;Treat your device like you are renting it.  Unlike renting a house, you can
+create a Virtual Machine in your host machine, and make whatever changes there,
+without fear of breaking your host.&lt;/p&gt;
+
+&lt;p&gt;How do you create a Virtual Machine?  The path of least resistance is through
+&lt;a href=&quot;https://www.vagrantup.com/&quot;&gt;Vagrant&lt;/a&gt; +
+&lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;VitrualBox&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is a simple but extendable
+&lt;a href=&quot;https://www.vagrantup.com/docs/vagrantfile/&quot;&gt;Vagrantfile&lt;/a&gt; for staring your
+first Virtual Mahcine.&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = &amp;quot;2&amp;quot;
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.ssh.forward_agent = true
+    config.ssh.forward_x11 = true
+
+    config.vm.box = &amp;quot;ubuntu/trusty64&amp;quot;
+    config.vm.box_check_update = true
+    config.vm.provider &amp;quot;virtualbox&amp;quot; do |vb|
+        vb.gui = false
+        vb.customize [&amp;quot;modifyvm&amp;quot;, :id, &amp;quot;--memory&amp;quot;, &amp;quot;1024&amp;quot;]
+    end
+
+    config.vm.define &amp;quot;workspace&amp;quot; do |m|
+        m.vm.network &amp;quot;private_network&amp;quot;, type: &amp;quot;dhcp&amp;quot;
+        m.vm.network &amp;quot;forwarded_port&amp;quot;, guest: 80, host: 8080
+    end
+
+end&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/jeffjen/6c2d06b99a5a0e1c41ca.js&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/provision-a-vagrant-vbox.gif&quot; alt=&quot;Provision a Vagrant + Vbox&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Place this in a path you control, such as your &lt;code class=&quot;highlighter-rouge&quot;&gt;Docuement&lt;/code&gt; folder.  Move to
+the folder where you placed this file and provision a Virtual Machine.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir -p /path/to/Docuement
+&lt;span class=&quot;c&quot;&gt;# Create Vagrantfile from gist, or create your own&lt;/span&gt;
+curl -sL -O https://gist.githubusercontent.com/jeffjen/6c2d06b99a5a0e1c41ca/raw/768b4695c921aa41a1a89bf3d6be7d3358db4b82/Vagrantfile
+&lt;span class=&quot;c&quot;&gt;# Initialize your workspace&lt;/span&gt;
+vagrant up workspace
+&lt;span class=&quot;c&quot;&gt;# Wait until initialized, then login&lt;/span&gt;
+vagrant ssh workspace&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Now you have a sandbox to work with, and a way to reproduce this box in case
+you messed up.&lt;/p&gt;
+
+&lt;h3 id=&quot;repeatable-environment&quot;&gt;Repeatable environment&lt;/h3&gt;
+&lt;p&gt;Taking your living space as an example, consider the cost of relocating to a
+different house.  Putting aside the cost of the rent, you need to package your
+belongings, find a way to ship those packages, and unpack them when they
+arrive.  The cost is huge, tedious, and error prone.&lt;/p&gt;
+
+&lt;p&gt;Now what if you need to move your virtual living space?  This consideration is
+valid because:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You had a hardware failure.&lt;/li&gt;
+  &lt;li&gt;You had an obscure failure in the Virtual Machine.&lt;/li&gt;
+  &lt;li&gt;You are upgrading your device for better performance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The best way to recover from these problems is to create a &lt;strong&gt;repeatable
+environment&lt;/strong&gt;, here I am using &lt;em&gt;Vagrant&lt;/em&gt; provisioning to reliably create an
+environment with &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;jekyll&lt;/a&gt; installed&lt;/p&gt;
+
+&lt;noscript&gt;&lt;pre&gt;# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# skip installing gem documentation
+
+$baseline_deps = &amp;lt;&amp;lt;SCRIPT
+apt-get update &amp;amp;&amp;amp; apt-get install -y --no-install-recommends \
+  autoconf \
+  automake \
+  bzip2 \
+  file \
+  g++ \
+  gcc \
+  imagemagick \
+  libbz2-dev \
+  libc6-dev \
+  libcurl4-openssl-dev \
+  libevent-dev \
+  libffi-dev \
+  libgeoip-dev \
+  libglib2.0-dev \
+  libjpeg-dev \
+  liblzma-dev \
+  libmagickcore-dev \
+  libmagickwand-dev \
+  libmysqlclient-dev \
+  libncurses-dev \
+  libpng-dev \
+  libpq-dev \
+  libreadline-dev \
+  libsqlite3-dev \
+  libssl-dev \
+  libtool \
+  libwebp-dev \
+  libxml2-dev \
+  libxslt-dev \
+  libyaml-dev \
+  make \
+  patch \
+  xz-utils \
+  zlib1g-dev \
+  &amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/*
+SCRIPT
+
+$install_ruby = &amp;lt;&amp;lt;SCRIPT
+mkdir -p /usr/local/etc \
+    &amp;amp;&amp;amp; { \
+        echo &amp;#39;install: --no-document&amp;#39;; \
+        echo &amp;#39;update: --no-document&amp;#39;; \
+    } &amp;gt;&amp;gt; /usr/local/etc/gemrc
+
+export RUBY_MAJOR=2.3
+export RUBY_VERSION=2.3.0
+export RUBY_DOWNLOAD_SHA256=ba5ba60e5f1aa21b4ef8e9bf35b9ddb57286cb546aac4b5a28c71f459467e507
+export RUBYGEMS_VERSION=2.6.1
+
+# some of ruby&amp;#39;s build scripts are written in ruby
+# we purge this later to make sure our final image uses what we just built
+set -ex \
+    &amp;amp;&amp;amp; buildDeps=&amp;#39; \
+        bison \
+        libgdbm-dev \
+        ruby \
+    &amp;#39; \
+    &amp;amp;&amp;amp; apt-get update \
+    &amp;amp;&amp;amp; apt-get install -y --no-install-recommends $buildDeps \
+    &amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/* \
+    &amp;amp;&amp;amp; curl -fSL -o ruby.tar.gz &amp;quot;http://cache.ruby-lang.org/pub/ruby/$RUBY_MAJOR/ruby-$RUBY_VERSION.tar.gz&amp;quot; \
+    &amp;amp;&amp;amp; echo &amp;quot;$RUBY_DOWNLOAD_SHA256 *ruby.tar.gz&amp;quot; | sha256sum -c - \
+    &amp;amp;&amp;amp; mkdir -p /usr/src/ruby \
+    &amp;amp;&amp;amp; tar -xzf ruby.tar.gz -C /usr/src/ruby --strip-components=1 \
+    &amp;amp;&amp;amp; rm ruby.tar.gz \
+    &amp;amp;&amp;amp; cd /usr/src/ruby \
+    &amp;amp;&amp;amp; { echo &amp;#39;#define ENABLE_PATH_CHECK 0&amp;#39;; echo; cat file.c; } &amp;gt; file.c.new &amp;amp;&amp;amp; mv file.c.new file.c \
+    &amp;amp;&amp;amp; autoconf \
+    &amp;amp;&amp;amp; ./configure --disable-install-doc \
+    &amp;amp;&amp;amp; make -j&amp;quot;$(nproc)&amp;quot; \
+    &amp;amp;&amp;amp; make install \
+    &amp;amp;&amp;amp; apt-get purge -y --auto-remove $buildDeps \
+    &amp;amp;&amp;amp; gem update --system $RUBYGEMS_VERSION \
+    &amp;amp;&amp;amp; rm -r /usr/src/ruby
+SCRIPT
+
+$install_jekyll = &amp;lt;&amp;lt;SCRIPT
+# finally, install jekyll
+gem install jekyll
+SCRIPT
+
+VAGRANTFILE_API_VERSION = &amp;quot;2&amp;quot;
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.ssh.forward_agent = true
+    config.ssh.forward_x11 = true
+
+    config.vm.box = &amp;quot;ubuntu/trusty64&amp;quot;
+    config.vm.box_check_update = true
+    config.vm.provider &amp;quot;virtualbox&amp;quot; do |vb|
+        vb.gui = false
+        vb.customize [&amp;quot;modifyvm&amp;quot;, :id, &amp;quot;--memory&amp;quot;, &amp;quot;1024&amp;quot;]
+    end
+
+    config.vm.define &amp;quot;workspace&amp;quot; do |m|
+        m.vm.provision &amp;quot;shell&amp;quot;, inline: $baseline_deps
+        m.vm.provision &amp;quot;shell&amp;quot;, inline: $install_ruby
+        m.vm.provision &amp;quot;shell&amp;quot;, inline: $install_jekyll
+        m.vm.network &amp;quot;private_network&amp;quot;, type: &amp;quot;dhcp&amp;quot;
+        m.vm.network &amp;quot;forwarded_port&amp;quot;, guest: 4000, host: 8081
+    end
+
+end&lt;/pre&gt;&lt;/noscript&gt;
+&lt;script src=&quot;https://gist.github.com/jeffjen/b466006f3a67f91a7a81.js&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/provision-jekyll.gif&quot; alt=&quot;Provision a jekyll box&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Destroy the box you created earlier by &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant destroy workspace&lt;/code&gt;, and create
+a new workspace with the new &lt;em&gt;Vagrantfile&lt;/em&gt;.  The provision can take a while
+depending on your machine and network performance.&lt;/p&gt;
+
+&lt;p&gt;With &lt;em&gt;Vagrant&lt;/em&gt;, when you feel you had a good box, you could store this box to
+use later, or share to your organization for a consistent environment.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/Docuement
+&lt;span class=&quot;c&quot;&gt;# Download the ridculously complex Vagrantfile to provision a box with jekyll&lt;/span&gt;
+curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/8cdaba026b8029b7d967160af7b63f5230a1cf58/Vagrantfile-jekyll
+vagrant up workspace
+&lt;span class=&quot;c&quot;&gt;# Review VirtualBox console for the name of your VM box&lt;/span&gt;
+vagrant pacakge --base name-of-your-box
+&lt;span class=&quot;c&quot;&gt;# Add this box with desired alias&lt;/span&gt;
+vagrant box add jekyll/3 package.box&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;version-control-configuration&quot;&gt;Version control configuration&lt;/h3&gt;
+&lt;p&gt;I cannot stress this enough: &lt;strong&gt;version control everything&lt;/strong&gt;.  You will be glad
+when you could traceback to a working version of your environment.  Also, what
+better place to store these configuration then in VCS providers such as
+&lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt; and &lt;a href=&quot;https://bitbucket.org/&quot;&gt;Bitbucket&lt;/a&gt;?&lt;/p&gt;
+
+&lt;h2 id=&quot;that-was-kind-of-brutal-for-setting-up-for-jekyll&quot;&gt;That was… kind of brutal, for setting up for Jekyll&lt;/h2&gt;
+&lt;p&gt;It was.  It goes to show how much were taken for granted by people
+managing your site, and perhaps they do deserve to be paid for their service.&lt;/p&gt;
+
+&lt;p&gt;But know this: &lt;em&gt;You pay for what you don’t know&lt;/em&gt;.  What you pay with today
+reading this post is with your time, and if you are running a business, perhaps
+you are paying with dough.&lt;/p&gt;
+
+&lt;h2 id=&quot;in-the-next-post&quot;&gt;In the next post&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 12 Mar 2016 10:00:00 +0000</pubDate>
+        <link>/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</link>
+        <guid isPermaLink="true">/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</guid>
+        
+        <category>devops, vagrant</category>
+        
+        
+        <category>vagrant</category>
         
       </item>
     
