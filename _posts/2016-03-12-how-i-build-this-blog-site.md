@@ -3,6 +3,9 @@ layout: post
 title: "How I build this blog site"
 date: 2016-03-12 10:00:00 +0000
 categories: vagrant
+tag:
+ - devops
+ - vagrant
 excerpt_separator: <!--more-->
 ---
 
