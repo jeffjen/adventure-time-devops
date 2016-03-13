@@ -2,7 +2,7 @@
 layout: post
 title: "How I build this blog site"
 date: 2016-03-12 10:00:00 +0000
-categories: docker jekyll
+categories: vagrant
 excerpt_separator: <!--more-->
 ---
 
@@ -20,8 +20,15 @@ In the end I landed on a solution using:
 
 <!--more-->
 
-If you are only interested in Jekyll setup and Github Pages deployment strategy,
-[click here](#create-a-jekyll-site).
+## For the faint of heart
+
+This post covers a great deal in how to provision an environment to start using
+jekyll.  The target audience really is people interested in VM provisioning and
+DevOps principles.
+
+Check out
+[Setup a Jekyll workspace and Strats for Deployment]({% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})
+for a gentle introduction on Jekyll and Github Pages.
 
 ## Considerations
 I am a DevOps engineer working with dozens of Linux machine on-premise, Cloud
@@ -125,87 +132,13 @@ when you could traceback to a working version of your environment.  Also, what
 better place to store these configuration then in VCS providers such as
 [Github](https://github.com/) and [Bitbucket](https://bitbucket.org/)?
 
-## About that jekyll site building...
-The best place to learn how to use jekyll is starting with their
-[excellent guide](https://jekyllrb.com/docs/usage/).  The goal for this
-last section is to teach you how I review and publish my jekyll site.
-Nonetheless, I will show you the minimum steps required to start a one with
-the box you created.
+## That was... kind of brutal, for setting up for Jekyll
+It was.  It goes to show how much were taken for granted by people
+managing your site, and perhaps they do deserve to be paid for their service.
 
-Here is the template Vagrantfile you will be using, notice that I had already
-added the box we provisioned earlier as `jekyll/3`:
+But know this: *You pay for what you don't know*.  What you pay with today
+reading this post is with your time, and if you are running a business, perhaps
+you are paying with dough.
 
-{% gist jeffjen/e170fa06e6ef892cb77c %}
-
-### Create a jekyll site
-![Building your first jekyll site]({{ site.url }}/assets/building-your-first-jekyll-site.gif)
-
-Make a decision on where you want to place your site source in, here I refer
-it by `jekyll-sites`.
-
-{% highlight bash %}
-# Bootstrap a new site called your-testing-site
-mkdir -p /path/to/jekyll-sites/your-testing-site
-cd /path/to/jekyll-sites/your-testing-site
-jekyll new your-testing-site
-# Generate site from source
-jekyll build --source your-testing-site --destination site
-# Serve the site for spot checking.
-jekyll serve -s your-testing-site -d site -H 0.0.0.0
-{% endhighlight %}
-
-View the site by visiting `http://127.0.0.1:4000` from your host machine.
-
-### Publish to Github Pages
-Now that you had your source in `your-testing-site` and your generated site
-`site`, its time to prepare publishing.
-
-We will publish to [Github Pages](https://pages.github.com/) since this will
- **force you to version control your site**.
-
-Create a repository on [Github](https://github.com), then from your
-`jekyll-sites`:
-
-{% highlight bash %}
-cd /path/to/jekyll-sites/your-testing-site/your-testing-site
-# Initialize your site source and configuration
-git init
-# Add remote repository URL and pull + rebase
-git remote add origin remote_url
-git pull --rebase
-# Optional push if you have had commited changes
-git push -u
-{% endhighlight %}
-
-Now you need to prepare a dedicated branch `gh-pages`.  Github Pages takes
-contents from this branch and host them on their server farm. Notice that
-`gh-pages` must:
-
-- Track files only pertain to your site.
-- Keep a separate history from your source.
-
-This is why we keep two document roots.  One for your **source code** and
-**jekyll runtime settings**; the other for storing and presenting the site.
-
-{% highlight bash %}
-cd /path/to/jekyll-sites/your-testing-site/site
-# Initialize generated contents and assets
-git init
-# Add remote repository URL
-git remote add origin remote_url
-# Checkout an orphaned branch gh-pages
-git checkout --orphan gh-pages
-# Add your site contents and make your first commit, then push to remote.
-git push -u origin gh-pages
-{% endhighlight %}
-
-And with that final step, your site is up on Github Pages.
-
-Visit your site through [http://your-account-name.github.io/your-testing-site/]()
-
-So to recap the deployment steps:
-
-- Direct Content and configuration changes to `your-testing-site`.
-- Manage your branch like you normaly would, provided not named `gh-pages`.
-- When you are ready to publish, goto your `site` directory and commit/push
-  to `gh-pages`.
+## In the next post
+[Setup a Jekyll workspace and Strats for Deployment](/adventure-time-devops{% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})
