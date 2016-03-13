@@ -3,6 +3,10 @@ layout: post
 title: "Setup a Jekyll workspace and Strats for Deployment"
 date: 2016-03-13 10:00:00 +0000
 categories: jekyll
+tags:
+ - jekyll
+ - github
+ - vagrant
 excerpt_separator: <!--more-->
 ---
 
