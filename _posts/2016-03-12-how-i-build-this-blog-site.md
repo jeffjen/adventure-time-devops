@@ -62,14 +62,20 @@ first Virtual Mahcine.
 ![Provision a Vagrant + Vbox]({{ site.url }}/assets/provision-a-vagrant-vbox.gif)
 
 Place this in a path you control, such as your `Docuement` folder.  Move to
-the folder where you placed this file and provision a Virtual Machine by
-running `vagrant up workspace`, then `vagrant ssh workspace` to login to your
-provisioned box.
+the folder where you placed this file and provision a Virtual Machine.
+
+{% highlight bash %}
+mkdir -p /path/to/Docuement
+# Create Vagrantfile from gist, or create your own
+curl -sL -O https://gist.githubusercontent.com/jeffjen/6c2d06b99a5a0e1c41ca/raw/768b4695c921aa41a1a89bf3d6be7d3358db4b82/Vagrantfile
+# Initialize your workspace
+vagrant up workspace
+# Wait until initialized, then login
+vagrant ssh workspace
+{% endhighlight %}
 
 Now you have a sandbox to work with, and a way to reproduce this box in case
 you messed up.
-
-Learn more on [Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/)
 
 ### Repeatable environment
 Taking your living space as an example, consider the cost of relocating to a
@@ -88,7 +94,7 @@ The best way to recover from these problems is to create a **repeatable
 environment**, here I am using *Vagrant* provisioning to reliably create an
 environment with [jekyll](https://jekyllrb.com/) installed
 
-{% gist jeffjen/6c2d06b99a5a0e1c41ca %}
+{% gist jeffjen/b466006f3a67f91a7a81 %}
 
 ![Provision a jekyll box]({{ site.url }}/assets/provision-jekyll.gif)
 
@@ -96,13 +102,16 @@ Destroy the box you created earlier by `vagrant destroy workspace`, and create
 a new workspace with the new *Vagrantfile*.  The provision can take a while
 depending on your machine and network performance.
 
-With *Vagrnat*, when you feel you had a good box, you could store this box
-by `vagrant package --base name-of-your-box`.  This will produce a
-`package.box` object in your working directory.  Anyone can use this box by
-`vagrant box add jekyll/2 /path/to/package.box`.
+With *Vagrant*, when you feel you had a good box, you could store this box to
+use later, or share to your organization for consistent environment.
 
-Learn more on [Vagrant box pacakaging](https://www.vagrantup.com/docs/virtualbox/boxes.html)
-Learn more on [How to distruibute your box](information://www.vagrantup.com/docs/cli/box.html#add)
+{% highlight bash %}
+cd /path/to/Docuement
+# Review VirtualBox console for the name of your VM box
+vagrant pacakge --base name-of-your-box
+# Add this box with desired alias
+vagrant box add jekyll/2 package.box
+{% endhighlight %}
 
 ### Version control configuration
 I cannot stress this enough: **version control everything**.  You will be glad
@@ -121,7 +130,7 @@ the box you created.
 Here is the template Vagrantfile you will be using, notice that I had already
 added the box we provisioned earlier as `jekyll/2`:
 
-{% gist jeffjen/6c2d06b99a5a0e1c41ca %}
+{% gist jeffjen/b466006f3a67f91a7a81 %}
 
 ### Create a jekyll site
 ![Building your first jekyll site]({{ site.url }}/assets/building-your-first-jekyll-site.gif)
@@ -131,30 +140,42 @@ want to place your site source in, here I referr to by `jekyll-sites`.
 
 Goto `/path/to/jekyll-sites` and bootstrap a site called `your-testing-site`
 
-- `mkdir -p your-testing-site`
-- `cd your-testing-site`
-- `jekyll new your-testing-site`
-- `jekyll build --source your-testing-site --destination _site`
+{% highlight bash %}
+# Bootstrap a new site called your-testing-site
+mkdir -p /path/to/jekyll-sites/your-testing-site
+cd your-testing-site
+jekyll new your-testing-site
+# Generate site from source
+jekyll build --source your-testing-site --destination site
+{% endhighlight %}
 
-Serve the site for spot checking.  To do this, execute
-`jekyll serve` under `/path/to/jekyll-sites/your-testing-site`
+Serve the site for spot checking.
 
-From your host machine browser, view the site by visiting
-`http://127.0.0.1:4040`.
+{% highlight bash %}
+cd /path/to/jekyll-sites/your-testing-site
+jekyll serve -s your-testing-site -d site -H 0.0.0.0
+{% endhighlight %}
+
+View the site by visiting `http://127.0.0.1:4000` from your host machine.
 
 ### Publish to Github Pages
 Now that you had your source in `your-testing-site` and your generated site
-`_site` under your workspace `jekyll-sites`, its time to prepare publishing.
+`site` under your workspace `jekyll-sites`, its time to prepare publishing.
 We will publish it to [Github Pages](https://pages.github.com/) since this is
 the easiest, as well as **forcing you to version control your site**.
 
-Create a repository on [Github](https://github.com).  In your source directory
-`/path/to/jekyll-sites/your-testing-site/your-testing-site`
+Create a repository on [Github](https://github.com).
 
-- `git init` and perform the first commit.
-- `git remote add origin [remote_url]`
-- `git pull --rebase`
-- `git push -u`
+{% highlight bash %}
+cd /path/to/jekyll-sites/your-testing-site/your-testing-site
+# Initialize your site source and configuration
+git init
+# Add remote repository URL and pull + rebase
+git remote add origin [remote\_url]
+git pull --rebase
+# Optional push if you have had commited changes
+git push -u
+{% endhighlight %}
 
 Now you need to prepare a dedicated branch `gh-pages`.  Github Pages takes
 contents from this branch and host them on their server farm. Notice that
@@ -166,24 +187,29 @@ contents from this branch and host them on their server farm. Notice that
 This is why we keep two document roots.  One for your **source code** and
 **jekyll** runtime settings; the other for storing and presenting the site.
 
-To setup, goto `/path/to/jekyll-sites/your-testing-site/_site` and setup local
-repository:
+{% highlight bash %}
+cd /path/to/jekyll-sites/your-testing-site/site
+# Initialize generated contents and assets
+git init
+# Add remote repository URL
+git remote add origin remote_url
+# Checkout an orphaned branch gh-pages
+git checkout --orphan gh-pages
+{% endhighlight %}
 
-- `git init`
-- `git remote add origin [remote_url]`
-- `git checkout --orphan gh-pages`
+Add your site contents and make your first commit, then push to remote.
 
-Add your site contents and make your first commit.  Then, push to remote
-`git push -u origin gh-pages`.
+{% highlight bash %}
+git push -u origin gh-pages
+{% endhighlight %}
 
-And with that final step, your site is up on Github Pages.  Visit your site
-through [http://your-account-name.github.io/your-testing-site/]()
+And with that final step, your site is up on Github Pages.
+
+Visit your site through [http://your-account-name.github.io/your-testing-site/]()
 
 So to recap the deployment steps:
 
-- Makes changes to `your-testing-site` and commit/push your changes as you
-  would handle source code.
-- You can still create local branch and push to remote branch as long as the
-  branch name is not `gh-pages`.
-- When you are ready to publish, goto your `_site` directory and commit/push
+- Direct Content and configuration changes to `your-testing-site`.
+- Manage your branch like you normaly would, provided not named `gh-pages`.
+- When you are ready to publish, goto your `site` directory and commit/push
   to `gh-pages`.
