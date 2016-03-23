@@ -43,24 +43,16 @@ Another concern I have is with [minimizing footprint](#minimizing-footprint) on
 the machine I work on, and [repeatable environment](#repeatable-environment) in
 case of migration or disaster recovery.
 
-Think about the role you play in:
-
-- As an Application Developer you work on a single project with a set of
-  predictable requirements.
-- As a DevOps engineer you work with many projects with different sets of
-  requirements.
-
 Finally, I need to [version control configuration](#version-control-configuration).
 
 ### Minimizing footprint
-Think about what you are allowed to do when you rent a place.  You probably
-will not take down a wall, retile the floor, or even place a nail on the wall.
-That is because your landlord had a contract with you stating you cannot, and
-rightly so for your own safety and their protection.
+What kind of changes are you allowed to make to your rented place?  You
+probably will not take down a wall, retile the floor, or even place a nail on
+the wall.  That is because your landlord had a contract with you stating you
+cannot, and rightly so for your own safety and their protection.
 
-Treat your device like you are renting it.  Unlike renting a house, you can
-create a Virtual Machine in your host machine, and make whatever changes there,
-without fear of breaking your host.
+Treat your device like you are *renting* it.  Create a Virtual Machine on your
+host machine, and make whatever changes there, without fear of breaking your host.
 
 How do you create a Virtual Machine?  The path of least resistance is through
 [Vagrant](https://www.vagrantup.com/) +
@@ -70,9 +62,11 @@ Here is a simple but extendable
 [Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/) for staring your
 first Virtual Mahcine.
 
-{% gist jeffjen/6c2d06b99a5a0e1c41ca %}
+<video width="100%" controls>
+    <source src="https://s3-ap-northeast-1.amazonaws.com/adventure-time-devops/provision-a-basic-vagrant-box.mp4" type="video/mp4">
+</video>
 
-![Provision a Vagrant + Vbox]({{ site.url }}/assets/provision-a-vagrant-vbox.gif)
+{% gist jeffjen/6c2d06b99a5a0e1c41ca %}
 
 Place this in a path you control, such as your `Docuement` folder.  Move to
 the folder where you placed this file and provision a Virtual Machine.
@@ -107,9 +101,11 @@ The best way to recover from these problems is to create a **repeatable
 environment**, here I am using *Vagrant* provisioning to reliably create an
 environment with [jekyll](https://jekyllrb.com/) installed
 
-{% gist jeffjen/b466006f3a67f91a7a81 %}
+<video width="100%" controls>
+    <source src="https://s3-ap-northeast-1.amazonaws.com/adventure-time-devops/provision-jekyll-vagrant-box.mp4" type="video/mp4">
+</video>
 
-![Provision a jekyll box]({{ site.url }}/assets/provision-jekyll.gif)
+{% gist jeffjen/b466006f3a67f91a7a81 %}
 
 Destroy the box you created earlier by `vagrant destroy workspace`, and create
 a new workspace with the new *Vagrantfile*.  The provision can take a while
@@ -121,8 +117,8 @@ use later, or share to your organization for a consistent environment.
 {% highlight bash %}
 cd /path/to/Docuement
 # Download the ridculously complex Vagrantfile to provision a box with jekyll
-curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/8cdaba026b8029b7d967160af7b63f5230a1cf58/Vagrantfile-jekyll
-vagrant up workspace
+curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/6e33e82e0ab24c0af70a2cae7a027436648c4993/Vagrantfile-jekyll
+vagrant up jekyll
 # Review VirtualBox console for the name of your VM box
 vagrant pacakge --base name-of-your-box
 # Add this box with desired alias
