@@ -117,7 +117,7 @@ use later, or share to your organization for a consistent environment.
 {% highlight bash %}
 cd /path/to/Docuement
 # Download the ridculously complex Vagrantfile to provision a box with jekyll
-curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/6e33e82e0ab24c0af70a2cae7a027436648c4993/Vagrantfile-jekyll
+curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/e8961d56f8c851a6f757cd966a8e5ce62e62ded8/Vagrantfile-jekyll
 vagrant up jekyll
 # Review VirtualBox console for the name of your VM box
 vagrant pacakge --base name-of-your-box
