@@ -105,7 +105,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize [&quot;modifyvm&quot;, :id, &quot;--memory&quot;, &quot;1024&quot;]
     end
 
-    config.vm.define &quot;workspace&quot; do |m|
+    config.vm.define &quot;jekyll&quot; do |m|
+        m.vm.provider &quot;virtualbox&quot; do |vb|
+            vb.name = &quot;jekyll&quot;
+        end
         m.vm.network &quot;private_network&quot;, type: &quot;dhcp&quot;
         m.vm.network &quot;forwarded_port&quot;, guest: 4000, host: 4000
     end
