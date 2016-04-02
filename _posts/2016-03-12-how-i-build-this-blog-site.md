@@ -62,9 +62,7 @@ Here is a simple but extendable
 [Vagrantfile](https://www.vagrantup.com/docs/vagrantfile/) for staring your
 first Virtual Mahcine.
 
-<video width="100%" controls>
-    <source src="https://s3-ap-northeast-1.amazonaws.com/adventure-time-devops/provision-a-basic-vagrant-box.mp4" type="video/mp4">
-</video>
+{% include youtube.html id="stQWhO_3zxw" %}
 
 {% gist jeffjen/6c2d06b99a5a0e1c41ca %}
 
@@ -74,7 +72,7 @@ the folder where you placed this file and provision a Virtual Machine.
 {% highlight bash %}
 mkdir -p /path/to/Docuement
 # Create Vagrantfile from gist, or create your own
-curl -sL -O https://gist.githubusercontent.com/jeffjen/6c2d06b99a5a0e1c41ca/raw/768b4695c921aa41a1a89bf3d6be7d3358db4b82/Vagrantfile
+curl -sL -O https://gist.githubusercontent.com/jeffjen/6c2d06b99a5a0e1c41ca/raw/e5a350b5f59943af4fc993850af010e3fb023885/Vagrantfile
 # Initialize your workspace
 vagrant up workspace
 # Wait until initialized, then login
@@ -101,9 +99,7 @@ The best way to recover from these problems is to create a **repeatable
 environment**, here I am using *Vagrant* provisioning to reliably create an
 environment with [jekyll](https://jekyllrb.com/) installed
 
-<video width="100%" controls>
-    <source src="https://s3-ap-northeast-1.amazonaws.com/adventure-time-devops/provision-jekyll-vagrant-box.mp4" type="video/mp4">
-</video>
+{% include youtube.html id="2U9-hImtdYA" %}
 
 {% gist jeffjen/b466006f3a67f91a7a81 %}
 
