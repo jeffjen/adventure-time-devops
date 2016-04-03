@@ -6,8 +6,8 @@
 </description>
     <link>/hello-devops/</link>
     <atom:link href="/hello-devops/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Apr 2016 08:58:40 +0000</pubDate>
-    <lastBuildDate>Sun, 03 Apr 2016 08:58:40 +0000</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2016 09:13:28 +0000</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 09:13:28 +0000</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -177,7 +177,7 @@ jekyll.  The target audience really is people interested in VM provisioning and
 DevOps principles.&lt;/p&gt;
 
 &lt;p&gt;Check out
-&lt;a href=&quot;/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;
+&lt;a href=&quot;/hello-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;
 for a gentle introduction on Jekyll and Github Pages.&lt;/p&gt;
 
 &lt;h2 id=&quot;considerations&quot;&gt;Considerations&lt;/h2&gt;
