@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Adventure Times Devops</title>
+    <title>Hello DevOps</title>
     <description>A DevOps, Engineer, Half-and-half Social Retard foraging into the wild wonderlands of post Cloud Computing rukus and miscellaneous things happening to me in life.
 </description>
-    <link>/adventure-time-devops/</link>
-    <atom:link href="/adventure-time-devops/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Apr 2016 18:43:30 +0000</pubDate>
-    <lastBuildDate>Sat, 02 Apr 2016 18:43:30 +0000</lastBuildDate>
+    <link>/hello-devops/</link>
+    <atom:link href="/hello-devops/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 03 Apr 2016 08:58:40 +0000</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 08:58:40 +0000</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -28,7 +28,7 @@ Nonetheless, I will show you the minimum steps required to start one.&lt;/p&gt;
 
 &lt;h2 id=&quot;before-you-start&quot;&gt;Before you start&lt;/h2&gt;
 &lt;p&gt;If you had missed the first post about
-&lt;a href=&quot;/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/&quot;&gt;How I build this blog site&lt;/a&gt;
+&lt;a href=&quot;/hello-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/&quot;&gt;How I build this blog site&lt;/a&gt;
 you might want to check that out first.  But if you are interated only in
 learning how to manage Jekyll and Deployment Strategy,
 &lt;a href=&quot;#create-a-jekyll-site&quot;&gt;skip ahead&lt;/a&gt;&lt;/p&gt;
@@ -138,8 +138,8 @@ to &lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt;.&lt;/li
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 13 Mar 2016 10:00:00 +0000</pubDate>
-        <link>/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</link>
-        <guid isPermaLink="true">/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</guid>
+        <link>/hello-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</link>
+        <guid isPermaLink="true">/hello-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/</guid>
         
         <category>jekyll</category>
         
@@ -433,11 +433,11 @@ reading this post is with your time, and if you are running a business, perhaps
 you are paying with dough.&lt;/p&gt;
 
 &lt;h2 id=&quot;in-the-next-post&quot;&gt;In the next post&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;/adventure-time-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/hello-devops/blog/jekyll/2016/03/13/setup-jekll-workspace-and-deploy-strats/&quot;&gt;Setup a Jekyll workspace and Strats for Deployment&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 12 Mar 2016 10:00:00 +0000</pubDate>
-        <link>/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</link>
-        <guid isPermaLink="true">/adventure-time-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</guid>
+        <link>/hello-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</link>
+        <guid isPermaLink="true">/hello-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/</guid>
         
         <category>devops</category>
         
