@@ -25,20 +25,20 @@ This post covers the following topic:
 ## Before you start
 If you had missed the first post about
 [How I build this blog site]({{site.baseurl}}{% post_url 2016-03-12-how-i-build-this-blog-site %})
-you might want to check that out first.  But if you are interated only in
+you might want to check that out first.  But if you are interested only in
 learning how to manage Jekyll and Deployment Strategy,
 [skip ahead](#create-a-jekyll-site)
 
 Here is the template Vagrantfile you will be using, notice that I had already
 added the box we provisioned earlier as `jekyll/3`:
 
-{% include youtube.html id="yQn7JR0uqIM" %}
-
 {% gist jeffjen/e170fa06e6ef892cb77c %}
 
 ## Create a jekyll site
 Make a decision on where you want to place your site source in, here I refer
 it by `jekyll-sites`.
+
+{% include youtube.html id="yQn7JR0uqIM" %}
 
 {% highlight bash %}
 # Bootstrap a new site called your-testing-site
