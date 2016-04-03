@@ -79,7 +79,7 @@ Nonetheless, I will show you the minimum steps required to start one.</p>
 <h2 id="before-you-start">Before you start</h2>
 <p>If you had missed the first post about
 <a href="/hello-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/">How I build this blog site</a>
-you might want to check that out first.  But if you are interated only in
+you might want to check that out first.  But if you are interested only in
 learning how to manage Jekyll and Deployment Strategy,
 <a href="#create-a-jekyll-site">skip ahead</a></p>
 
@@ -120,18 +120,22 @@ end</pre></noscript>
 <p>Make a decision on where you want to place your site source in, here I refer
 it by <code class="highlighter-rouge">jekyll-sites</code>.</p>
 
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-bottom: 10px;} .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
+
+<div class="embed-container">
+<iframe width="100%" src="https://www.youtube.com/embed/yQn7JR0uqIM" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># Bootstrap a new site called your-testing-site</span>
 mkdir -p /path/to/jekyll-sites/your-testing-site
 <span class="nb">cd</span> /path/to/jekyll-sites/your-testing-site
 jekyll new your-testing-site
 <span class="c"># Generate site from source</span>
-jekyll build --source your-testing-site --destination site
+jekyll build -s your-testing-site -d site
 <span class="c"># Serve the site for spot checking.</span>
 jekyll serve -s your-testing-site -d site -H 0.0.0.0</code></pre></figure>
 
 <p>View the site by visiting <code class="highlighter-rouge">http://127.0.0.1:4000</code> from your host machine.</p>
-
-<p><img src="/assets/building-your-first-jekyll-site.gif" alt="Building your first jekyll site" /></p>
 
 <h2 id="publish-to-github-pages">Publish to Github Pages</h2>
 <p>Now that you had your source in <code class="highlighter-rouge">your-testing-site</code> and your generated site
@@ -140,17 +144,60 @@ jekyll serve -s your-testing-site -d site -H 0.0.0.0</code></pre></figure>
 <p>We will publish to <a href="https://pages.github.com/">Github Pages</a> since this will
 <strong>force you to version control your site</strong>.</p>
 
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-bottom: 10px;} .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
+
+<div class="embed-container">
+<iframe width="100%" src="https://www.youtube.com/embed/z_1SEsjKkgc" frameborder="0" allowfullscreen=""></iframe>
+</div>
+
 <p>Create a repository on <a href="https://github.com">Github</a>, then from your
 <code class="highlighter-rouge">jekyll-sites</code>:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /path/to/jekyll-sites/your-testing-site/your-testing-site
 <span class="c"># Initialize your site source and configuration</span>
 git init
+git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"BEGIN: blogging"</span>
 <span class="c"># Add remote repository URL and pull + rebase</span>
-git remote add origin remote_url
-git pull --rebase
+git remote add origin <span class="o">[</span>remote_url]
+git pull origin master --rebase
 <span class="c"># Optional push if you have had commited changes</span>
-git push -u</code></pre></figure>
+git push --set-upstream origin master</code></pre></figure>
+
+<p>Before we can start deploying our generated content to Github Pages, we need to
+configure the site so that it follows Github Pages path layout.  Sites hosted
+by Github Pages have their host name set as
+<code class="highlighter-rouge">http://username.github.io/project-name</code>.  Thus we need to tell jekyll generate
+the site under <code class="highlighter-rouge">project-name</code> by configuring <code class="highlighter-rouge">baseurl</code> in <code class="highlighter-rouge">_config.yml</code>.</p>
+
+<p>Notice that after you had made this change, when reviewing content with
+<code class="highlighter-rouge">jekyll serve</code>, your site is hosted at
+<code class="highlighter-rouge">http://127.0.0.1:4000/your-testing-site/</code>.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1"># Site settings</span>
+<span class="s">title</span><span class="pi">:</span> <span class="s">Your awesome title</span>
+
+<span class="s">email</span><span class="pi">:</span> <span class="s">your-email@domain.com</span>
+
+<span class="s">description</span><span class="pi">:</span> <span class="pi">&gt;</span>
+  <span class="no">Write an awesome description for your new site here</span>
+
+<span class="s">baseurl</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/your-testing-site"</span> <span class="c1"># Github Pages hosted root path</span>
+
+<span class="s">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span> <span class="c1"># the base hostname &amp; protocol for your site</span>
+
+<span class="s">twitter_username</span><span class="pi">:</span> <span class="s">twitter</span>
+
+<span class="s">github_username</span><span class="pi">:</span> <span class="s">github</span>
+
+<span class="c1"># Build settings</span>
+<span class="s">markdown</span><span class="pi">:</span> <span class="s">kramdown</span>
+
+<span class="c1"># Use Github Flavored Markdown</span>
+<span class="s">kramdown</span><span class="pi">:</span>
+  <span class="s">input</span><span class="pi">:</span> <span class="s">GFM</span></code></pre></figure>
+
+<p>Replace your default <code class="highlighter-rouge">_config.yml</code> with the above; do remember to <strong>add</strong> and
+<strong>commit</strong> your chagnes.</p>
 
 <p>Now you need to prepare a dedicated branch <code class="highlighter-rouge">gh-pages</code>.  Github Pages takes
 contents from this branch and host them on their server farm. Notice that
@@ -168,17 +215,16 @@ contents from this branch and host them on their server farm. Notice that
 <span class="c"># Initialize generated contents and assets</span>
 git init
 <span class="c"># Add remote repository URL</span>
-git remote add origin remote_url
+git remote add origin <span class="o">[</span>remote_url]
 <span class="c"># Checkout an orphaned branch gh-pages</span>
 git checkout --orphan gh-pages
+git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"BEGIN: site generated content"</span>
 <span class="c"># Add your site contents and make your first commit, then push to remote.</span>
-git push -u origin gh-pages</code></pre></figure>
+git push --set-upstream origin gh-pages</code></pre></figure>
 
-<p>And with that final step, your site is up on Github Pages.</p>
+<p>And with that final step, your site is up on <a href="">http://username.github.io/your-testing-site/</a>.</p>
 
-<p>Visit your site through <a href="">http://your-account-name.github.io/your-testing-site/</a></p>
-
-<p>So to recap the deployment steps:</p>
+<h2 id="recap-deployment-steps">Recap deployment steps:</h2>
 
 <ul>
   <li>Direct Content and configuration changes to <code class="highlighter-rouge">your-testing-site</code>.</li>

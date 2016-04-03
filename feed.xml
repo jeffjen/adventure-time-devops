@@ -6,8 +6,8 @@
 </description>
     <link>/hello-devops/</link>
     <atom:link href="/hello-devops/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 Apr 2016 09:13:28 +0000</pubDate>
-    <lastBuildDate>Sun, 03 Apr 2016 09:13:28 +0000</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2016 18:51:06 +0000</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 18:51:06 +0000</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -29,7 +29,7 @@ Nonetheless, I will show you the minimum steps required to start one.&lt;/p&gt;
 &lt;h2 id=&quot;before-you-start&quot;&gt;Before you start&lt;/h2&gt;
 &lt;p&gt;If you had missed the first post about
 &lt;a href=&quot;/hello-devops/blog/vagrant/2016/03/12/how-i-build-this-blog-site/&quot;&gt;How I build this blog site&lt;/a&gt;
-you might want to check that out first.  But if you are interated only in
+you might want to check that out first.  But if you are interested only in
 learning how to manage Jekyll and Deployment Strategy,
 &lt;a href=&quot;#create-a-jekyll-site&quot;&gt;skip ahead&lt;/a&gt;&lt;/p&gt;
 
@@ -70,18 +70,22 @@ end&lt;/pre&gt;&lt;/noscript&gt;
 &lt;p&gt;Make a decision on where you want to place your site source in, here I refer
 it by &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-sites&lt;/code&gt;.&lt;/p&gt;
 
+&lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-bottom: 10px;} .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
+
+&lt;div class=&quot;embed-container&quot;&gt;
+&lt;iframe width=&quot;100%&quot; src=&quot;https://www.youtube.com/embed/yQn7JR0uqIM&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Bootstrap a new site called your-testing-site&lt;/span&gt;
 mkdir -p /path/to/jekyll-sites/your-testing-site
 &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/jekyll-sites/your-testing-site
 jekyll new your-testing-site
 &lt;span class=&quot;c&quot;&gt;# Generate site from source&lt;/span&gt;
-jekyll build --source your-testing-site --destination site
+jekyll build -s your-testing-site -d site
 &lt;span class=&quot;c&quot;&gt;# Serve the site for spot checking.&lt;/span&gt;
 jekyll serve -s your-testing-site -d site -H 0.0.0.0&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;View the site by visiting &lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000&lt;/code&gt; from your host machine.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/building-your-first-jekyll-site.gif&quot; alt=&quot;Building your first jekyll site&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;publish-to-github-pages&quot;&gt;Publish to Github Pages&lt;/h2&gt;
 &lt;p&gt;Now that you had your source in &lt;code class=&quot;highlighter-rouge&quot;&gt;your-testing-site&lt;/code&gt; and your generated site
@@ -90,17 +94,60 @@ jekyll serve -s your-testing-site -d site -H 0.0.0.0&lt;/code&gt;&lt;/pre&gt;&lt
 &lt;p&gt;We will publish to &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt; since this will
 &lt;strong&gt;force you to version control your site&lt;/strong&gt;.&lt;/p&gt;
 
+&lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin-bottom: 10px;} .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
+
+&lt;div class=&quot;embed-container&quot;&gt;
+&lt;iframe width=&quot;100%&quot; src=&quot;https://www.youtube.com/embed/z_1SEsjKkgc&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
 &lt;p&gt;Create a repository on &lt;a href=&quot;https://github.com&quot;&gt;Github&lt;/a&gt;, then from your
 &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll-sites&lt;/code&gt;:&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/jekyll-sites/your-testing-site/your-testing-site
 &lt;span class=&quot;c&quot;&gt;# Initialize your site source and configuration&lt;/span&gt;
 git init
+git add . &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;BEGIN: blogging&quot;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Add remote repository URL and pull + rebase&lt;/span&gt;
-git remote add origin remote_url
-git pull --rebase
+git remote add origin &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;remote_url]
+git pull origin master --rebase
 &lt;span class=&quot;c&quot;&gt;# Optional push if you have had commited changes&lt;/span&gt;
-git push -u&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+git push --set-upstream origin master&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Before we can start deploying our generated content to Github Pages, we need to
+configure the site so that it follows Github Pages path layout.  Sites hosted
+by Github Pages have their host name set as
+&lt;code class=&quot;highlighter-rouge&quot;&gt;http://username.github.io/project-name&lt;/code&gt;.  Thus we need to tell jekyll generate
+the site under &lt;code class=&quot;highlighter-rouge&quot;&gt;project-name&lt;/code&gt; by configuring &lt;code class=&quot;highlighter-rouge&quot;&gt;baseurl&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Notice that after you had made this change, when reviewing content with
+&lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, your site is hosted at
+&lt;code class=&quot;highlighter-rouge&quot;&gt;http://127.0.0.1:4000/your-testing-site/&lt;/code&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Site settings&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Your awesome title&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-email@domain.com&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;Write an awesome description for your new site here&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/your-testing-site&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Github Pages hosted root path&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# the base hostname &amp;amp; protocol for your site&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;twitter_username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;twitter&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;github_username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Build settings&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;markdown&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kramdown&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Use Github Flavored Markdown&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;kramdown&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GFM&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Replace your default &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; with the above; do remember to &lt;strong&gt;add&lt;/strong&gt; and
+&lt;strong&gt;commit&lt;/strong&gt; your chagnes.&lt;/p&gt;
 
 &lt;p&gt;Now you need to prepare a dedicated branch &lt;code class=&quot;highlighter-rouge&quot;&gt;gh-pages&lt;/code&gt;.  Github Pages takes
 contents from this branch and host them on their server farm. Notice that
@@ -118,17 +165,16 @@ contents from this branch and host them on their server farm. Notice that
 &lt;span class=&quot;c&quot;&gt;# Initialize generated contents and assets&lt;/span&gt;
 git init
 &lt;span class=&quot;c&quot;&gt;# Add remote repository URL&lt;/span&gt;
-git remote add origin remote_url
+git remote add origin &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;remote_url]
 &lt;span class=&quot;c&quot;&gt;# Checkout an orphaned branch gh-pages&lt;/span&gt;
 git checkout --orphan gh-pages
+git add . &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;BEGIN: site generated content&quot;&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# Add your site contents and make your first commit, then push to remote.&lt;/span&gt;
-git push -u origin gh-pages&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+git push --set-upstream origin gh-pages&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;And with that final step, your site is up on Github Pages.&lt;/p&gt;
+&lt;p&gt;And with that final step, your site is up on &lt;a href=&quot;&quot;&gt;http://username.github.io/your-testing-site/&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Visit your site through &lt;a href=&quot;&quot;&gt;http://your-account-name.github.io/your-testing-site/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;So to recap the deployment steps:&lt;/p&gt;
+&lt;h2 id=&quot;recap-deployment-steps&quot;&gt;Recap deployment steps:&lt;/h2&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Direct Content and configuration changes to &lt;code class=&quot;highlighter-rouge&quot;&gt;your-testing-site&lt;/code&gt;.&lt;/li&gt;
