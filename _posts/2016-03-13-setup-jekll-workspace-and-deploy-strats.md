@@ -32,6 +32,8 @@ learning how to manage Jekyll and Deployment Strategy,
 Here is the template Vagrantfile you will be using, notice that I had already
 added the box we provisioned earlier as `jekyll/3`:
 
+{% include youtube.html id="yQn7JR0uqIM" %}
+
 {% gist jeffjen/e170fa06e6ef892cb77c %}
 
 ## Create a jekyll site
@@ -44,14 +46,12 @@ mkdir -p /path/to/jekyll-sites/your-testing-site
 cd /path/to/jekyll-sites/your-testing-site
 jekyll new your-testing-site
 # Generate site from source
-jekyll build --source your-testing-site --destination site
+jekyll build -s your-testing-site -d site
 # Serve the site for spot checking.
 jekyll serve -s your-testing-site -d site -H 0.0.0.0
 {% endhighlight %}
 
 View the site by visiting `http://127.0.0.1:4000` from your host machine.
-
-![Building your first jekyll site]({{ site.url }}/assets/building-your-first-jekyll-site.gif)
 
 ## Publish to Github Pages
 Now that you had your source in `your-testing-site` and your generated site
@@ -60,6 +60,8 @@ Now that you had your source in `your-testing-site` and your generated site
 We will publish to [Github Pages](https://pages.github.com/) since this will
 **force you to version control your site**.
 
+{% include youtube.html id="z_1SEsjKkgc" %}
+
 Create a repository on [Github](https://github.com), then from your
 `jekyll-sites`:
 
@@ -67,12 +69,51 @@ Create a repository on [Github](https://github.com), then from your
 cd /path/to/jekyll-sites/your-testing-site/your-testing-site
 # Initialize your site source and configuration
 git init
+git add . && git commit -m "BEGIN: blogging"
 # Add remote repository URL and pull + rebase
-git remote add origin remote_url
-git pull --rebase
+git remote add origin [remote_url]
+git pull origin master --rebase
 # Optional push if you have had commited changes
-git push -u
+git push --set-upstream origin master
 {% endhighlight %}
+
+Before we can start deploying our generated content to Github Pages, we need to
+configure the site so that it follows Github Pages path layout.  Sites hosted
+by Github Pages have their host name set as
+`http://username.github.io/project-name`.  Thus we need to tell jekyll generate
+the site under `project-name` by configuring `baseurl` in `_config.yml`.
+
+Notice that after you had made this change, when reviewing content with
+`jekyll serve`, your site is hosted at
+`http://127.0.0.1:4000/your-testing-site/`.
+
+{% highlight yaml %}
+# Site settings
+title: Your awesome title
+
+email: your-email@domain.com
+
+description: >
+  Write an awesome description for your new site here
+
+baseurl: "/your-testing-site" # Github Pages hosted root path
+
+url: "" # the base hostname & protocol for your site
+
+twitter_username: twitter
+
+github_username: github
+
+# Build settings
+markdown: kramdown
+
+# Use Github Flavored Markdown
+kramdown:
+  input: GFM
+{% endhighlight %}
+
+Replace your default `_config.yml` with the above; do remember to **add** and
+**commit** your chagnes.
 
 Now you need to prepare a dedicated branch `gh-pages`.  Github Pages takes
 contents from this branch and host them on their server farm. Notice that
@@ -89,18 +130,17 @@ cd /path/to/jekyll-sites/your-testing-site/site
 # Initialize generated contents and assets
 git init
 # Add remote repository URL
-git remote add origin remote_url
+git remote add origin [remote_url]
 # Checkout an orphaned branch gh-pages
 git checkout --orphan gh-pages
+git add . && git commit -m "BEGIN: site generated content"
 # Add your site contents and make your first commit, then push to remote.
-git push -u origin gh-pages
+git push --set-upstream origin gh-pages
 {% endhighlight %}
 
-And with that final step, your site is up on Github Pages.
+And with that final step, your site is up on [http://username.github.io/your-testing-site/]().
 
-Visit your site through [http://your-account-name.github.io/your-testing-site/]()
-
-So to recap the deployment steps:
+## Recap deployment steps:
 
 - Direct Content and configuration changes to `your-testing-site`.
 - Manage your branch like you normaly would, provided not named `gh-pages`.
