@@ -136,4 +136,4 @@ reading this post is with your time, and if you are running a business, perhaps
 you are paying with dough.
 
 ## In the next post
-[Setup a Jekyll workspace and Strats for Deployment](/adventure-time-devops{% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})
+[Setup a Jekyll workspace and Strats for Deployment](/hello-devops{% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})

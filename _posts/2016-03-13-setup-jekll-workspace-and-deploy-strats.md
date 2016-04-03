@@ -24,7 +24,7 @@ This post covers the following topic:
 
 ## Before you start
 If you had missed the first post about
-[How I build this blog site](/adventure-time-devops{% post_url 2016-03-12-how-i-build-this-blog-site %})
+[How I build this blog site](/hello-devops{% post_url 2016-03-12-how-i-build-this-blog-site %})
 you might want to check that out first.  But if you are interated only in
 learning how to manage Jekyll and Deployment Strategy,
 [skip ahead](#create-a-jekyll-site)

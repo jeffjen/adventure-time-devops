@@ -4,8 +4,8 @@ title: About
 permalink: /about/
 ---
 
-What is Adventure Time DevOps
------------------------------
+What is Hello DevOps
+--------------------
 
 The primary focus of this blog is dedicated to sharing knowledge on topics
 dear and near to my heart: **Desigining and Automating DevOps workflow** and
