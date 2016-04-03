@@ -30,7 +30,7 @@ jekyll.  The target audience really is people interested in VM provisioning and
 DevOps principles.
 
 Check out
-[Setup a Jekyll workspace and Strats for Deployment]({% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})
+[Setup a Jekyll workspace and Strats for Deployment]({{site.baseurl}}{% post_url 2016-03-13-setup-jekll-workspace-and-deploy-strats %})
 for a gentle introduction on Jekyll and Github Pages.
 
 ## Considerations
