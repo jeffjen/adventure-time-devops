@@ -155,7 +155,7 @@ the folder where you placed this file and provision a Virtual Machine.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir -p /path/to/Docuement
 <span class="c"># Create Vagrantfile from gist, or create your own</span>
-curl -sL -O https://gist.githubusercontent.com/jeffjen/6c2d06b99a5a0e1c41ca/raw/e5a350b5f59943af4fc993850af010e3fb023885/Vagrantfile
+curl -sL -o Vagrantfile http://bit.ly/Vagrant-basic
 <span class="c"># Initialize your workspace</span>
 vagrant up workspace
 <span class="c"># Wait until initialized, then login</span>
@@ -319,7 +319,7 @@ use later, or share to your organization for a consistent environment.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /path/to/Docuement
 <span class="c"># Download the ridculously complex Vagrantfile to provision a box with jekyll</span>
-curl -sL -o Vagrantfile https://gist.githubusercontent.com/jeffjen/b466006f3a67f91a7a81/raw/e8961d56f8c851a6f757cd966a8e5ce62e62ded8/Vagrantfile-jekyll
+curl -sL -o Vagrantfile http://bit.ly/Vagrantfile-jekyll
 vagrant up jekyll
 <span class="c"># Review VirtualBox console for the name of your VM box</span>
 vagrant pacakge --base name-of-your-box
