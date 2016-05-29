@@ -11,10 +11,9 @@ excerpt_separator: <!--more-->
 
 Consumers today have two options (three if you bother the hassel) when
 purchasing device for work: either you have one with **OS X** installed, or
-**Windows** installed (and for the hard core fans, your choice of **unix
-distro**).  This creates a problem for application developers because the
-environment you work and test in is different from your deployment target,
-usually a unix/linux box.
+**Windows** installed (and for hard core fans, your choice of **unix**).  This
+creates a problem for application developers because the environment you work
+and test in is different from your deployment target, usually a unix/linux box.
 
 For those working with windows server, don't even bother with your complaints.
 [Look at where Microsoft is heading](https://www.linux.com/news/bash-windows-what-does-it-mean).
@@ -27,16 +26,14 @@ of such wonderful creation, go look at
 for a tour.
 
 ## The Problem
-
-Still with using Virtual Machine the biggest pain point is the amount of
-resource spent when dealing with many boxes at once.  This problem occurs often
-when you work as a DevOps where mapping your test environment to match
+Still with Virtual Machine the biggest pain point is the amount of resource
+and time spent when dealing with many boxes at once.  This problem occurs often
+when working as a DevOps where mapping test environment to match
 staging/production environment is necessary.  You could purchase VMWare
 solutions or build your own OpenStack infrastructure, but really is this
 necessary?
 
 ## The Answer
-
 The answer is [Docker](https://www.docker.com/).
 
 <!--more-->
@@ -48,113 +45,138 @@ eliminates the need for Virtual Machine, and make your work life better.
 But first, lets setup an environment to run Docker.  Two choices here:
 
 - Install using [Docker Toolbox](https://www.docker.com/products/docker-toolbox)
-- [Build a Virtual Machine with Docker installed.](#for-the-brave-tinker)
+- [Build a Virtual Machine with Docker installed.](#for-the-brave-tinkerer)
 
-## What can I do with Docker
+## Nomenclature:
+- A **Container** is a linux kernel feature that provides software level
+  isolation.
+- Container can be created, started, stoped, and removed.
+- An **Image**  is the execution context.  A Container is created with an
+  Image.
+- **Dockerfile** is the recipe for building a Image.
+- Each **RUN**, **ADD**, **COPY**, etc adds a **Layer** to the Image.
+- **ENTRYPOINT** is the command that runs when the Container is started.
+- **CMD** has two meaning:  
+  - When an ENTRYPOINT is specified, CMD will be tacked on as arguments to
+    ENTRYPOINT.
+  - If we specified CMD without ENTRYPOINT, that is the command at container
+    start.
+  - CMD can be overrided at the command line.
+- You **store and ship** the image.
 
-### Running program in an isolated environment
-Node.js, Ruby, and Python apps depend on an interpreter to operate.  If you are
-running an application written in those language only for the feature it
-provides, there is very little reason to install the interpreter on the system.
+## Running program in an isolated environment
+Node.js, Ruby, and Python apps depend on a interpreter to work.  If you are
+running an application written in those language ONLY for the feature it
+provides, not to develop with it, there is very little reason to install the
+interpreter on the system.
 
 For example, I am not a Ruby developer, but I want to use
 [jekyll](https://jekyllrb.com/) for blog generation; instead of installing
-Ruby which I will rarely use, package jekyll as a Docker Image.
+Ruby which I will rarely use, I packaged jekyll as a Docker Image.
 
 {% gist fc8739efcd89c4557005cde416731506 %}
 
-- Copy the contents to `Dockerfile` in your workspace.
-- Run `docker build -t jekyll .`
+{% highlight bash %}
+# Download Dockerfile for jekyll
+curl -sL -o Dockerfile http://bit.ly/Dockerfile-jekyll
+# Build docker image
+docker build -t jekyll .
+# Download the helper script
+curl -sL -O http://bit.ly/jekyll-cli
+# Make it executable
+chmod +x jekyll-cli
+# Create a new blog src if you don't have one already
+./jekyll-cli new your-blog-src
+# Launch jekyll to serve and watch files
+./jekyll-cli serve -s your-blog-src -d your-blog-site -H 0.0.0.0
+{% endhighlight %}
 
-#### What had just happened?
+{% include youtube.html id="S1beABvOPCA" %}
 
-- Docker Daemon pulled down `ruby:latest` image from [Docker Hub](https://hub.docker.com/)
-  to your disk
-- Docker Daemon builds a new image called `jekyll:latest`  
-    - From the specifications in `Dockerfile`
-    - `ruby:latest` as base image.
+Visit your site from your host machine at `localhost:8080`
 
 List the images by running `docker images`.
 
-#### How do I run jekyll?
-{% highlight bash %}
-# Download the helper script
-curl -sL -O https://gist.githubusercontent.com/jeffjen/fc8739efcd89c4557005cde416731506/raw/74712ff2c508e56d43840650c6c9f6efd3a05312/jekyll
-# Make it executable
-chmod +x jekyll
-# Launch jekyll to serve and watch files
-./jekyll serve -s your-blog-src -d your-blog-site -H 0.0.0.0
-{% endhighlight %}
+### What had just happened?
 
-Visit your site from your host machine at `127.0.0.1:8080`
+- Docker Daemon pulled image `ruby:latest` from [Docker Hub](https://hub.docker.com/)
+  to your disk
+- `ruby:latest` is the base image that provides `ruby` interpreter and
+  `build-essentials` for building native gems.
+- We specified `jekyll` to be the `entrypoint` of the image, and the default
+  command line flag is `--help`
 
-#### Why is this better?
+### Why is this better?
 
 - You did not install Ruby for just one app.
 - The Linux Distro you are using might not have Ruby 2.x available.  To get
   around this you need [rvm](https://rvm.io/) to fetch and build Ruby from
   source.
+- Suppose you wanted to try an alpha version of jekyll, you need only change the
+  gem version and build a sepearte Docker Image.  **No rollback worries**.
 
-### Developing in the target environment
+## Developing in the target environment
 I am a [Golang](https://golang.org/) enthusiast; Golang by itself deserves a
 dedicated topic and **should be picked up by any DevOps who wants to ship
 compact artifacts**.  But in order to build and write in Golang I need the Go
 developer tool chain installed on my host machine to compile/build Go code...
 right?
 
-**No**.  You could write the code in your natrual environment.  When you are
+**No**.  You could write the code in your preferred environment.  When you are
 ready to build, build with Docker.
 
 {% highlight bash %}
-docker run --rm -v ${GOPATH}:/go -w /go/src/path-to-project golang:1.6 \
-    go build -v
+# Find a place to make Gopher home
+export GOPATH=/path/to/go
+mkdir -p ${GOPATH}/src ${GOPATH}/pkg ${GOPATH}/bin
+cd ${GOPATH}
+# Setup script to run golang image as command
+cat <<EOF >/usr/local/bin/go
+#!/bin/bash
+docker run --rm -v ${GOPATH}:/go golang:1.6 go \$@
+EOF
+chmod +x /usr/local/bin/go
+# Now, lets get the official golang tutorial
+go get golang.org/x/tour/gotour
+# And run the tour
+./bin/gotour -http 0.0.0.0:8080
 {% endhighlight %}
 
-#### What is this mad magic
+{% include youtube.html id="ZGHlj5I1tFs" %}
 
-- You command Docker Daemon to  
-    - Create and start a one time `container` using `golang:1.6` image.
-    - If the image is not there already it is downloaded.
-- You bind directory `${GOPATH}` on your host to `/go` in the `container`
-- You set the runtime working directory to be where your project is.  
-    - Original path is `${GOPATH}/src/path-to-project`
-    - We used `/go` as anchor when specifiying directory in the `container`.
-- Finally, the command you run in the `container` is `go build -v`.
-- Your binary appears in `${GOPATH}/src/path-to-project`
+### What is this mad magic
+- We created a helper script to wrap the *docker command* to represent **go**
+  binary
+- This command creates and start a one time `container` using *golang:1.6*
+  image.
+- Bind directory `${GOPATH}` on your `host` to `/go` in the `container`.
 
-#### No like v1.6!!
+### No like v1.6!!
 Fine.  Change the image version to `golang:1.5`.
 
-Consider the implication: Suppose you are working with `Python 2.7`, but there
-are projects built with special requirements from `Python 3`.  Installing and
-managing different Python versions is a dangerous task that could break your
-system if not handled properly.
+Think about what had just become available: **You can switch between language
+versions without conflict with the one installed on your system**.
 
-Avoid these problems with running or building with Docker.
+Imagine you are an author of a quite successful open source project.  You want
+to support different versions of the language runtime.  To ensure that it works
+over these environments, you need to build and test them properly.  Before, you
+could try to spin up VMs to deal with these disparate environments, now you
+simply build and test in different containers.
 
-### A shippable environment
-You might have picked up the trend here with the introduction of Ruby and
-Golang base images.  These images are built and maintained by the
-Docker Hub team so that users could repliably reproduce an environment with
-Ruby or Golang installed.
+## A shippable environment
+You might have picked up the trend here with the introduction of *Ruby* and
+*Golang* base images.  These images are built and maintained by the
+[Docker Hub](https://hub.docker.com/) team so that users could repliably
+reproduce an environment with Ruby or Golang installed.  In the same vein, you
+could build and ship full applications as Docker images and be confident that
+these applications will not have unmet dependencies.
 
-In the same vein, you could build and ship full applications as Docker images.
-Take the `jekyll` case for example, you do not need to rebuild the image on
-each machine; build the image and push to Docker Hub, then pull the image to
-other machines that requires it.
-
-But a Docker image can be not just an application package.  You could ship *the
-whole environment* as an image, bells and whistles included, such that people
-in your organization works with consistent tool chain.
+But a Docker image can be more then just an application package.  You could
+ship **the whole environment** as an image, bells and whistles included, so that
+people in your organization **works with consistent tool chain**.
 
 Take my own [Dockerfile](https://github.com/jeffjen/workspace/blob/master/Dockerfile)
-as an example:
-
-- Common tools installed
-- Bind mounts and configuration installed
-- Ready to use environment
-
-Now when I move to a new host machine, I can restore my workspace by
+as an example, when I move to a new host machine, I can restore my workspace by
 
 - Bootstrap the machine to run Docker
 - Pull my workspace image and launch  
@@ -163,7 +185,7 @@ Now when I move to a new host machine, I can restore my workspace by
     - Text editor installed and configured
     - Shell environment installed and configured
 
-## For the brave tinker
+## For the brave tinkerer
 For those of you who want more control over your Docker Environment, here is a
 step by step guide using **Vagrant**.
 
