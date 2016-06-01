@@ -1,11 +1,16 @@
 ---
 layout: post
-title: "Beyond Virtual Machine, into Containers"
+title: "Beyond Virtual Machine, into Docker"
 date: 2016-04-23 10:00:00 +0000
 categories: docker
 tag:
- - devops
- - docker
+  - devops
+  - docker
+description: >
+  With three use cases: Running Ruby app in a continer, building native program
+  with a container, and a portable workspcae that could be deployed on any
+  linux machine, I demonstrate why Docker will radically change how you manage
+  your system.
 excerpt_separator: <!--more-->
 ---
 

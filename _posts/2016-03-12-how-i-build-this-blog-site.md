@@ -4,8 +4,12 @@ title: "How I build this blog site"
 date: 2016-03-12 10:00:00 +0000
 categories: vagrant
 tag:
- - devops
- - vagrant
+  - devops
+  - vagrant
+description: >
+  Thought process for choosing jekyll as a blog generator, informal discussion
+  on DevOps principles, and training yourself to become a virtual machine
+  power user.
 excerpt_separator: <!--more-->
 ---
 

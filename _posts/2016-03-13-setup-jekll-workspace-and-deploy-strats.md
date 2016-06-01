@@ -4,9 +4,12 @@ title: "Setup a Jekyll workspace and Strats for Deployment"
 date: 2016-03-13 10:00:00 +0000
 categories: jekyll
 tags:
- - jekyll
- - github
- - vagrant
+  - jekyll
+  - github
+  - vagrant
+description: >
+  Puttering along in the quest for generating blog.  We discuss how to
+  structure your jekyll project to fit Github Pages deployment.
 excerpt_separator: <!--more-->
 ---
 
