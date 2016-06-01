@@ -6,12 +6,12 @@
 </description>
     <link>/hello-devops/</link>
     <atom:link href="/hello-devops/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 May 2016 18:25:01 +0000</pubDate>
-    <lastBuildDate>Sun, 29 May 2016 18:25:01 +0000</lastBuildDate>
+    <pubDate>Wed, 01 Jun 2016 17:49:36 +0000</pubDate>
+    <lastBuildDate>Wed, 01 Jun 2016 17:49:36 +0000</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
-        <title>Beyond Virtual Machine, into Containers</title>
+        <title>Beyond Virtual Machine, into Docker</title>
         <description>&lt;p&gt;Consumers today have two options (three if you bother the hassel) when
 purchasing device for work: either you have one with &lt;strong&gt;OS X&lt;/strong&gt; installed, or
 &lt;strong&gt;Windows&lt;/strong&gt; installed (and for hard core fans, your choice of &lt;strong&gt;unix&lt;/strong&gt;).  This
