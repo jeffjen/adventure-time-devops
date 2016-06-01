@@ -20,6 +20,8 @@ baseurl: "/hello-devops" # the subpath of your site, e.g. /blog
 
 url: "" # the base hostname & protocol for your site
 
+image_url: "s3-ap-northeast-1.amazonaws.com/hello-devops" # provider hostname for image
+
 # permalink pattern for generated posts
 # NOTE: categories will be added from Frontmatter categories variable
 #
