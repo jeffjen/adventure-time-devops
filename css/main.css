@@ -455,3 +455,23 @@ pre {
     color: #008080; }
   .highlight .il {
     color: #099; }
+
+hr.glyph {
+  padding: 0;
+  margin: 0 30px;
+  border: none;
+  border-top: medium double #333;
+  color: #333;
+  text-align: center; }
+
+hr.glyph:after {
+  content: "</>";
+  display: inline-block;
+  position: relative;
+  top: -0.9em;
+  font: 1em monospace;
+  padding: 0 0.25em;
+  background: #FDFDFD; }
+
+img.site-logo {
+  float: left; }
